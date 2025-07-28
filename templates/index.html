@@ -10,14 +10,18 @@
             background-color: #f5f6fa;
             display: flex;
             justify-content: center;
-            padding: 40px;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         .container {
-            max-width: 600px;
+            max-width: 900px;
             background: white;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 60px 80px;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transform: scale(1.9);
+            transition: transform 0.3s ease;
         }
         h1 {
             text-align: center;
@@ -30,9 +34,9 @@
             gap: 15px;
         }
         input, select, button {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 8px;
+            padding: 18px;
+            font-size: 22px;
+            border-radius: 10px;
             border: 1px solid #dcdde1;
         }
         button {
@@ -68,6 +72,7 @@
 <body>
     <div class="container">
         <h1>NBA Player Median Stats</h1>
+        <p style="text-align: center;"><a href="/odds">→ Go to Odds Converter</a></p>
         <form method="POST">
         <input type="text" name="player_name" value="{{ player_name }}" placeholder="Enter player name" required>
         

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Odds Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            background: white;
+            padding: 60px 80px;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transform: scale(1.9);
+            transition: transform 0.3s ease;
+        }
+        h1 {
+            text-align: center;
+            color: #2f3640;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input, select, button {
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 1px solid #dcdde1;
+        }
+        select {
+            font-size: 18px;
+        }
+        button {
+            background-color: #00b894;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #55efc4;
+        }
+        .results {
+            margin-top: 30px;
+            background-color: #f1f2f6;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+        .results div {
+            margin: 8px 0;
+        }
+        a {
+            text-align: center;
+            font-size: 14px;
+            color: #6c5ce7;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 20px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        #error-message {
+            color: red;
+            font-size: 18px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Odds Converter</h1>
+        <a href="/">← Back to Player Stats</a>
+
+        <form method="POST" onsubmit="return validateForm()">
+            <select name="odds_type" id="odds_type" required>
+                <option value="Decimal" {% if odds_type == "Decimal" %}selected{% endif %}>Decimal</option>
+                <option value="American" {% if odds_type == "American" %}selected{% endif %}>American</option>
+                <option value="Fractional" {% if odds_type == "Fractional" %}selected{% endif %}>Fractional</option>
+            </select>
+
+            <input type="number" step="any" name="value" id="odds_value" placeholder="Enter odds value" required>
+            <div id="error-message">⚠️ Please enter an odds value.</div>
+
+            <button type="submit">Convert</button>
+        </form>
+
+        {% if implied_prob is defined and decimal is defined and american is defined and fractional is defined %}
+        <div class="results">
+            <div><strong>Implied Probability:</strong> {{ '{:.1f}'.format(implied_prob * 100) }}%</div>
+            <div><strong>Decimal Odds:</strong> {{ decimal }}</div>
+            <div><strong>American Odds:</strong> {{ american }}</div>
+            <div><strong>Fractional Odds:</strong> {{ fractional }}</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+    function validateForm() {
+        const oddsInput = document.getElementById('odds_value');
+        const errorMsg = document.getElementById('error-message');
+        if (!oddsInput.value.trim()) {
+            errorMsg.style.display = "block";
+            return false;
+        }
+        errorMsg.style.display = "none";
+        return true;
+    }
+    </script>
+</body>
+</html>
