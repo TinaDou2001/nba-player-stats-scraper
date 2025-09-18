@@ -1,103 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>NBA Player Median Stats</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f5f6fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            max-width: 900px;
-            background: white;
-            padding: 60px 80px;
-            border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-            transform: scale(1.9);
-            transition: transform 0.3s ease;
-        }
-        h1 {
-            text-align: center;
-            color: #2f3640;
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        input, select, button {
-            padding: 18px;
-            font-size: 22px;
-            border-radius: 10px;
-            border: 1px solid #dcdde1;
-        }
-        button {
-            background-color: #0984e3;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #74b9ff;
-        }
-        .results {
-            margin-top: 30px;
-        }
-        .results h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px 20px;
-            background-color: #f1f2f6;
-            padding: 15px;
-            border-radius: 8px;
-        }
-        .grid div {
-            word-break: break-word;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>NBA Player Median Stats</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --fg: #2f3640;
+      --bg: #f5f6fa;
+      --card: #fff;
+      --accent: #0984e3;
+      --accent-2: #74b9ff;
+      --muted: #f1f2f6;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      display: flex;
+      justify-content: center;
+      padding: 3rem 1rem;
+      margin: 0;
+    }
+    .container {
+      width: min(1100px, 100%);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 6px 18px rgba(0,0,0,.12);
+      padding: clamp(28px, 4vw, 48px);
+    }
+    h1 {
+      text-align: center;
+      color: var(--fg);
+      margin: 0 0 0.75rem;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+    }
+    form {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin: 1rem 0 1.25rem;
+    }
+    input, select, button {
+      padding: 14px 14px;
+      font-size: clamp(1rem, 1.6vw, 1.125rem);
+      border-radius: 10px;
+      border: 1px solid #dcdde1;
+      width: 100%;
+    }
+    button {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s ease;
+      white-space: nowrap;
+    }
+    button:hover { background: var(--accent-2); }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.1fr 1.4fr;
+      gap: 16px;
+      margin-top: 1rem;
+    }
+    .card {
+      background: var(--muted);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: var(--fg);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 16px;
+      font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+      word-break: break-word;
+    }
+    .list {
+      max-height: 55vh;
+      overflow: auto;
+      padding-right: 6px;
+    }
+    ol.stats-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      font-size: clamp(0.98rem, 1.6vw, 1.1rem);
+    }
+    ol.stats-list li {
+      margin: 6px 0;
+      padding: 6px 8px;
+      border-radius: 8px;
+      line-height: 1.35;
+      background: #fff;
+      border: 1px solid #ececec;
+    }
+    ol.stats-list li.median {
+      background: #fff7b3;
+      outline: 1px dashed #e0c351;
+    }
+    .pill {
+      display: inline-block;
+      background: #fff;
+      border: 1px solid #e6e6e6;
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-left: 6px;
+      font-size: 0.9em;
+    }
+
+    @media (max-width: 860px){
+      form { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>NBA Player Median Stats</h1>
-        <p style="text-align: center;"><a href="/odds">→ Go to Odds Converter</a></p>
-        <form method="POST">
-        <input type="text" name="player_name" value="{{ player_name }}" placeholder="Enter player name" required>
-        
-        <select name="season" required>
-            {% for year in years %}
-            <option value="{{ year }}" {% if year|string == selected_season %}selected{% endif %}>{{ year }}</option>
-            {% endfor %}
-        </select>
+  <div class="container">
+    <h1>NBA Player Median Stats</h1>
 
-        <button type="submit">Get Stats</button>
-        </form>
+    <form method="POST">
+      <input type="text" name="player_name" value="{{ player_name }}" placeholder="Enter player name" required>
+      <select name="season" required>
+        {% for year in years %}
+          <option value="{{ year }}" {% if year|string == selected_season %}selected{% endif %}>{{ year }}</option>
+        {% endfor %}
+      </select>
+      <select name="category" required>
+        {% for stat in ['PTS','TRB','AST','STL','BLK','TOV','FG','FGA','3P','3PA','FT','FTA','+/-'] %}
+          <option value="{{ stat }}" {% if stat == selected_category %}selected{% endif %}>{{ stat }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Get Stats</button>
+    </form>
 
-        {% if medians is not none %}
-        <div class="results">
-            <h2>Medians for {{ player_name }}:</h2>
-            <div class="grid">
-                {% for key, value in medians.items() %}
-                    {% if value == value %}
-                        <div><strong>{{ key }}</strong></div>
-                        <div>{{ value }}</div>
-                    {% endif %}
-                {% endfor %}
-            </div>
+    {% if medians is not none or ranked_items %}
+    <div class="two-col">
+      {% if medians is not none %}
+      <div class="card">
+        <h2>Medians for {{ player_name }} ({{ selected_season }})</h2>
+        <div class="grid">
+          {% for key, value in medians.items() %}
+            {% if value == value %}
+              <div><strong>{{ key }}</strong></div>
+              <div>{{ value }}</div>
+            {% endif %}
+          {% endfor %}
         </div>
-        {% endif %}
+      </div>
+      {% endif %}
+
+      {% if ranked_items %}
+      <div class="card list">
+        <h2>{{ selected_category }} — All Games (Ranked)</h2>
+        <ol class="stats-list">
+          {% for item in ranked_items %}
+            <li class="{% if item.is_median %}median{% endif %}">
+              {{ item.rank }}. {{ item.value }} {{ selected_category }}
+              <span class="pill">{{ (item.prob * 100) | round(1) }}%</span>
+              <span class="pill">{{ item.odds }}</span>
+              {% if item.is_median %}<span class="pill">median</span>{% endif %}
+            </li>
+          {% endfor %}
+        </ol>
+      </div>
+      {% endif %}
     </div>
+    {% endif %}
+  </div>
 </body>
 </html>
