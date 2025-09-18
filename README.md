@@ -34,8 +34,13 @@ A simple Flask web app that:
 
 ## Project Structure
 nba-player-stats-scraper/
+
 ├─ app.py # Flask app & routes
+
 ├─ nba_scraper.py # scraping + cleaning helpers
+
 ├─ requirements.txt # python deps
+
 └─ templates/
+
 └─ index.html # main UI
