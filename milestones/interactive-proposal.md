@@ -49,7 +49,7 @@ https://storm-is-brewing.netlify.app/
 
 ## Mockup
 
-![](mockup-nba-player-comparison.png)
+![](Sketch.png)
 
 **Sketch Description:**  
 - **Top bar:** Dropdowns for Player, Season, and Stat Category.  
